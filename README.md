@@ -3,8 +3,7 @@
 1. [Описание ТЗ](#описание-тз)
 2. [Требования](#требования)
 3. [Плюсы](#плюсами-будут)
-
-Макет -
+4. [Макет](https://www.figma.com/file/0wrzG8QvmgAv5NyCMlYvfD/github-forks?node-id=0%3A1&t=wNJ6WJP9dyhmtDCW-1)
 
 ## Описание ТЗ:
 
