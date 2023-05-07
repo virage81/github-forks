@@ -1,7 +1,19 @@
-function SearchBar() {
+import React, { useState } from "react";
+
+// Валидация поиска
+// searchBarValue = searchBar.value();
+
+function SearchBar(props) {
+	const { value } = props;
+
+	function validate() {
+		if (props.value === "q") console.log(true);
+		return value;
+	}
+
 	return (
 		<form action="" className="search">
-			<input type="text" className="search__input" placeholder="Найти репозиторий..." />
+			<input type="text" className="search__input" id="searchBar" placeholder="Найти репозиторий..." onChange={validate} />
 			<button type="submit" className="search__button">
 				<svg width="28" height="29" viewBox="0 0 28 29" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M16.9166 17.4167L22.75 23.25" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
