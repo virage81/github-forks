@@ -1,0 +1,70 @@
+.header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 5;
+
+	padding: 10px 0;
+
+	background: #c4c4c4;
+
+	&__inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	&__logo {
+		font-size: 24px;
+		color: $text-color;
+
+		transition: transform 0.05s ease-in-out;
+
+		&:hover {
+			transform: scale(1.1);
+		}
+	}
+
+	&__nav {
+		&__list {
+			display: flex;
+			align-items: center;
+			gap: 0 20px;
+		}
+
+		&__link {
+			display: inline-block;
+
+			padding: 3px;
+
+			font-size: 16px;
+			color: inherit;
+			text-transform: uppercase;
+
+			&::after {
+				display: block;
+				content: "";
+
+				position: relative;
+				bottom: 0;
+				right: 0;
+				left: 0;
+
+				width: 0;
+				height: 1px;
+
+				background: $text-color;
+
+				transition: width 0.2s ease-in-out;
+			}
+
+			&:hover,
+			&:focus {
+				&::after {
+					width: 100%;
+				}
+			}
+		}
+	}
+}

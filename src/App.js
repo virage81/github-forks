@@ -1,14 +1,23 @@
+// Libs
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import SearchBar from "./components/searchBar";
+// Pages
+import Home from "./pages/home";
+import Result from "./pages/result";
 
+// Stylesheets
 import "./scss/style.scss";
 
-export const App = () => (
-	<div className="wrapper">
-		<SearchBar />
-	</div>
-);
+function App() {
+	return (
+		<Router>
+			<Routes>
+				<Route path="/" element={<Home />} />
+				<Route path="/result" element={<Result />} />
+			</Routes>
+		</Router>
+	);
+}
 
 export default App;
