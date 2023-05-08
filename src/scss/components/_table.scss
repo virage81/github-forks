@@ -3,9 +3,6 @@
 
 	width: 100%;
 
-	padding: 20px;
-
-	table-layout: fixed;
 	border-collapse: collapse;
 	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
 
@@ -22,6 +19,7 @@
 
 		&:nth-child(1) {
 			width: 2.4%;
+			text-align: center;
 		}
 		&:nth-child(2) {
 			width: 15%;
@@ -39,6 +37,21 @@
 
 	&__cell {
 		font-size: 16px;
+
+		&:first-child {
+			text-align: center;
+		}
+
+		a {
+			color: $text-color;
+
+			transition: color 0.1s ease-in-out;
+
+			&:hover,
+			&:focus {
+				color: $text-placeholder;
+			}
+		}
 	}
 
 	&__heading,

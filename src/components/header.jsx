@@ -17,7 +17,7 @@ function Header() {
 								</Link>
 							</li>
 							<li className="header__nav__item">
-								<Link to="/result" className="header__nav__link">
+								<Link to="/search" className="header__nav__link">
 									Результаты
 								</Link>
 							</li>

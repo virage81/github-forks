@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Octokit } from "octokit";
 
 import ErrMessage from "../components/message";
 
@@ -13,13 +14,9 @@ function SearchBar() {
 		noOwner = "Error: enter a user.",
 		noRepo = "Error: repository doesn't exist.";
 
-	const handleChange = (e) => {
-		setSearch(e.target.value);
-	};
-
 	// Валидация поиска
-	function validate(e) {
-		e.preventDefault();
+	const validateSearch = (e) => {
+		setSearch(e.target.value);
 
 		switch (true) {
 			case search.indexOf("/") === -1 || search.length === 0:
@@ -43,17 +40,39 @@ function SearchBar() {
 				setMessage("");
 				break;
 		}
-	}
+	};
 
-	// Валидация поиска
-	// Если нету "/", вывод ошибки
-	// Если перед "/", нету слова (владельца репозитория), вывод ошибки
-	// Если последний символ "/", нету репозитория, вывод ошибки
+	// Отправка запроса
+	const GITHUB_TOKEN = "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";
+	const octokit = new Octokit({
+		auth: GITHUB_TOKEN,
+	});
+
+	async function getRepo(e) {
+		e.preventDefault();
+		let owner = search.substring(0, search.indexOf("/")),
+			repo = search.substring(search.indexOf("/") + 1, search.length);
+		try {
+			const result = await octokit.request("GET /repos/{owner}/{repo}/forks", {
+				owner: owner,
+				repo: repo,
+				per_page: 100,
+			});
+
+			console.log(result);
+
+			const resultObj = result.data.map((item) => [{ title: item.name, author: item.owner.login, stars: item.stargazers_count }]);
+			// const resultObj = result.data.map((item) => item.stargazers_count);
+			console.log(resultObj);
+		} catch (err) {
+			console.log(err);
+		}
+	}
 
 	return (
 		<form action="" className="search">
-			<input type="text" className="search__input" id="searchBar" placeholder="Найти репозиторий..." value={search} onChange={handleChange} />
-			<button type="submit" onClick={validate} className="search__button">
+			<input type="text" className="search__input" id="searchBar" placeholder="Найти репозиторий..." value={search} onChange={validateSearch} />
+			<button type="submit" onClick={getRepo} className="search__button">
 				<svg width="28" height="29" viewBox="0 0 28 29" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M16.9166 17.4167L22.75 23.25" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
 					<path
