@@ -8,7 +8,7 @@ function Result() {
 		<div className="wrapper">
 			<Header />
 			<main className="main">
-				<div className="container">
+				<div className="container">к
 					<SearchBar />
 					<Table />
 				</div>

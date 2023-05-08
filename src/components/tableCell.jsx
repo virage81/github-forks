@@ -1,7 +1,6 @@
 import React from "react";
 
-function TableCell(props) {
-	const { id, name, author, stars, favorite, link } = props;
+function TableCell({ id, name, author, stars, favorite, link }) {
 	return (
 		<tr className="table__row">
 			<td className="table__cell">{id}</td>
