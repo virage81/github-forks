@@ -1,13 +1,11 @@
-// import axios from "axios";
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { add } from "../redux/resultSlice";
 
 import TableCell from "../components/tableCell";
 
 function Table() {
-	let array = [
-		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
-		39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75,
-		76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100,
-	];
+	const storeResult = useSelector((state) => state.result.result);
 
 	return (
 		<table className="table">
@@ -23,12 +21,19 @@ function Table() {
 				</tr>
 			</thead>
 			<tbody>
-				{array.map((item) => {
-					return <TableCell id={item} name="Study" author="virage81" stars="4" favorite="Да" link="https://github.com/virage81/Study" />;
+				{storeResult.map((item, index) => {
+					return (
+						<TableCell
+							key={index + 1}
+							id={index + 1}
+							name={item.title}
+							author={item.author}
+							stars={item.stars}
+							favorite="Да"
+							link={item.link}
+						/>
+					);
 				})}
-				{/* <TableCell id="1" name="Study" author="virage81" stars="4" favorite="Да" link="https://github.com/virage81/Study" />
-				<TableCell id="2" name="Gold-Group" author="s0ret" stars="4.3" favorite="Да" link="https://github.com/s0ret/Gold-Group" />
-				<TableCell id="3" name="Rezolut" author="virage82" stars="3.7" favorite="Нет" link="https://github.com/virage82/Rezolut" /> */}
 			</tbody>
 		</table>
 	);

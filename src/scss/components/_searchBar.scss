@@ -1,40 +1,33 @@
-@import "../vars";
-
 .search {
-	display: flex;
-	align-items: center;
-	gap: 0 20px;
-
-	padding-right: 30px;
+	position: relative;
 
 	max-width: 1200px;
 	width: 100%;
 
-	background: #fff;
-
-	border-radius: 20px;
-
-	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
-
 	&__input {
-		width: calc(100% - 28px);
+		background: #fff;
 
-		padding: 10px 0 10px 30px;
+		width: 100%;
 
-		border-radius: 20px 0 0 20px;
+		padding: 10px 60px 10px 30px;
 
+		border-radius: 20px;
 		border: none;
 		outline: none;
 
-		position: relative;
-
-		transition: color 0.2s ease-in-out;
+		box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
 	}
 
 	&__button {
+		position: absolute;
+		top: 0;
+		right: 10px;
+		bottom: 0;
+		z-index: 5;
+
 		box-sizing: content-box;
-		width: 28px;
-		height: 28px;
+		width: 34px;
+		height: 34px;
 
 		padding: 5px;
 

@@ -1,5 +1,3 @@
-import React from "react";
-
 function TableCell({ id, name, author, stars, favorite, link }) {
 	return (
 		<tr className="table__row">
@@ -9,7 +7,9 @@ function TableCell({ id, name, author, stars, favorite, link }) {
 			<td className="table__cell">{stars}</td>
 			<td className="table__cell">{favorite}</td>
 			<td className="table__cell">
-				<a href="{link}">{link}</a>
+				<a href={link} target="_blank" rel="noreferrer">
+					{link}
+				</a>
 			</td>
 		</tr>
 	);
