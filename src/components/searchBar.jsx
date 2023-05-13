@@ -4,7 +4,7 @@ import { Octokit } from "octokit";
 import { Link } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
-import { add } from "../redux/resultSlice";
+import { init } from "../redux/resultSlice";
 
 import ErrMessage from "../components/message";
 
@@ -50,13 +50,12 @@ function SearchBar() {
 	// };
 
 	// Отправка запроса
-	const GITHUB_TOKEN = "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";
+	const GITHUB_TOKEN = "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";
 	const octokit = new Octokit({
 		auth: GITHUB_TOKEN,
 	});
 
 	async function getRepo(e) {
-		e.preventDefault();
 		let owner = search.substring(0, search.indexOf("/")),
 			repo = search.substring(search.indexOf("/") + 1, search.length);
 
@@ -71,7 +70,7 @@ function SearchBar() {
 			const storeResult = request.data.map((item) => {
 				return { title: item.full_name, author: item.owner.login, stars: item.stargazers_count, link: item.html_url };
 			});
-			dispatch(add(storeResult));
+			dispatch(init(storeResult));
 		} catch (err) {
 			console.log(err);
 		}

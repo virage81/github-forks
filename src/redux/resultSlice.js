@@ -8,12 +8,12 @@ export const resultSlice = createSlice({
 	name: "result",
 	initialState,
 	reducers: {
-		add(state, action) {
+		init(state, action) {
 			state.result = action.payload;
 		},
 	},
 });
 
-export const { add } = resultSlice.actions;
+export const { init } = resultSlice.actions;
 
 export default resultSlice.reducer;
