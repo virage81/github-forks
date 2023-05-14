@@ -1,45 +1,82 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+
+import { useSelector } from "react-redux";
 
 import TableCell from "../components/tableCell";
+import Pagination from "../components/pagination";
 
-function Table({ loading, currentFork }) {
-	switch (true) {
-		case loading:
-			return <p className="table__error">Загрузка...</p>;
+function Table() {
+	const storeResult = useSelector((state) => state.result.result);
 
-		case currentFork.length === 0:
-			return <p className="table__error">К сожалению, у данного репозитория нету forks</p>;
+	const [forks, setForks] = useState([]);
+	const [loading, setLoading] = useState(false);
+	const [currentPage, setCurrentPage] = useState(1);
+	const [forksPerPage] = useState(50);
 
-		default:
-			return (
-				<table className="table">
-					<caption className="table__title">RESULT</caption>
-					<thead>
-						<tr className="table__row">
-							<th className="table__heading">#</th>
-							<th className="table__heading">Название</th>
-							<th className="table__heading">Владелец</th>
-							<th className="table__heading">Звезды</th>
-							<th className="table__heading">Избранное</th>
-							<th className="table__heading">Ссылка</th>
-						</tr>
-					</thead>
-					<tbody>
-						{currentFork.map((item, index) => (
-							<TableCell
-								key={index + 1}
-								id={index + 1}
-								name={item.title}
-								owner={item.owner}
-								stars={item.stars}
-								favorite="Да"
-								link={item.link}
-							/>
-						))}
-					</tbody>
-				</table>
-			);
+	const lastForkIndex = currentPage * forksPerPage;
+	const firstForkIndex = lastForkIndex - forksPerPage;
+	const currentFork = forks.slice(firstForkIndex, lastForkIndex);
+
+	useEffect(() => {
+		setLoading(true);
+		setForks(storeResult);
+		if (storeResult.length !== 0) setLoading(false);
+	}, [storeResult]);
+
+	// Устанавливаю текущую страницу
+	const paginate = (pageNumber) => {
+		setCurrentPage(pageNumber);
+	};
+
+	// Уменьшаю текущую страницу
+	const prevPage = () => {
+		if (currentPage === 1) return;
+		setCurrentPage((prev) => prev - 1);
+	};
+
+	// Увеличиваю текущую страницу
+	const nextPage = () => {
+		if (currentPage === Math.ceil(storeResult.length / forksPerPage)) return;
+		setCurrentPage((prev) => prev + 1);
+	};
+
+	if (loading) {
+		return <p className="table__error">...</p>;
 	}
+
+	console.log(currentFork);
+
+	return (
+		<>
+			<table className="table">
+				<caption className="table__title">RESULT</caption>
+				<thead>
+					<tr className="table__row">
+						<th className="table__heading">#</th>
+						<th className="table__heading">Название</th>
+						<th className="table__heading">Владелец</th>
+						<th className="table__heading">Звезды</th>
+						<th className="table__heading">Избранное</th>
+						<th className="table__heading">Ссылка</th>
+					</tr>
+				</thead>
+				<tbody>
+					{currentFork.map((item) => (
+						<TableCell
+							key={item.id}
+							id={item.id}
+							name={item.title}
+							owner={item.owner}
+							stars={item.stars}
+							favorite="Да"
+							link={item.link}
+						/>
+					))}
+				</tbody>
+			</table>
+			<Pagination forksPerPage={forksPerPage} totalForks={storeResult.length} paginate={paginate} prevPage={prevPage} nextPage={nextPage} />
+		</>
+	);
 }
 
 export default Table;
