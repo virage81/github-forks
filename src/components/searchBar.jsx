@@ -9,6 +9,7 @@ import { init } from "../redux/resultSlice";
 
 // Components
 import ErrMessage from "../components/message";
+import { changeLoading } from "../redux/loadingSlice";
 
 function SearchBar() {
 	const dispatch = useDispatch();
@@ -49,6 +50,7 @@ function SearchBar() {
 
 			default:
 				getRepo();
+				dispatch(changeLoading(true));
 				navigate("/search", { replace: false });
 				break;
 		}
@@ -58,9 +60,6 @@ function SearchBar() {
 			setMessage("");
 		}, 5000);
 	};
-
-	// Переход на страницу результатов
-	const moveToSearch = () => {};
 
 	// Отправка запроса
 	async function getRepo() {
@@ -87,12 +86,11 @@ function SearchBar() {
 				page++;
 
 				request.data.map((item) => {
-					return storeResult.push({ title: item.name, author: item.owner.login, stars: item.stargazers_count, link: item.html_url });
+					return storeResult.push({ title: item.name, owner: item.owner.login, stars: item.stargazers_count, link: item.html_url });
 				});
 			} while (request.data.length === 100);
 
 			dispatch(init(storeResult));
-			moveToSearch();
 		} catch (err) {
 			console.log(err);
 		}
