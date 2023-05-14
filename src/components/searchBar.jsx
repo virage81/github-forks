@@ -1,15 +1,13 @@
 // Libs
 import React, { useState } from "react";
-import { Octokit } from "octokit";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 // Store components
-import { init } from "../redux/resultSlice";
+import { fetchContent } from "../redux/resultSlice";
 
 // Components
 import ErrMessage from "../components/message";
-import { changeLoading } from "../redux/loadingSlice";
 
 function SearchBar() {
 	const dispatch = useDispatch();
@@ -30,7 +28,7 @@ function SearchBar() {
 	}
 
 	// Валидация поиска
-	const validateSearch = (e) => {
+	const validateSearch = () => {
 		switch (true) {
 			case search.indexOf("/") === -1 || search.length === 0:
 				setIsErr(true);
@@ -49,8 +47,7 @@ function SearchBar() {
 				break;
 
 			default:
-				getRepo();
-				dispatch(changeLoading(true));
+				dispatch(fetchContent({ url: search }));
 				navigate("/search", { replace: false });
 				break;
 		}
@@ -60,41 +57,6 @@ function SearchBar() {
 			setMessage("");
 		}, 5000);
 	};
-
-	// Отправка запроса
-	async function getRepo() {
-		const GITHUB_TOKEN = "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";
-		const octokit = new Octokit({
-			auth: GITHUB_TOKEN,
-		});
-
-		let owner = search.substring(0, search.indexOf("/")),
-			repo = search.substring(search.indexOf("/") + 1, search.length),
-			storeResult = [],
-			page = 1;
-
-		try {
-			do {
-				if (page === 3) break;
-
-				var request = await octokit.request("GET /repos/{owner}/{repo}/forks", {
-					owner: owner,
-					repo: repo,
-					per_page: 100,
-					page: page,
-				});
-				page++;
-
-				request.data.map((item) => {
-					return storeResult.push({ title: item.name, owner: item.owner.login, stars: item.stargazers_count, link: item.html_url });
-				});
-			} while (request.data.length === 100);
-
-			dispatch(init(storeResult));
-		} catch (err) {
-			console.log(err);
-		}
-	}
 
 	return (
 		<>

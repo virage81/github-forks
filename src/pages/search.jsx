@@ -1,42 +1,24 @@
 // Libs
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { fetchContent } from "../redux/resultSlice";
 
 // Components
 import SearchBar from "../components/searchBar";
 import Table from "../components/table";
 
 function Result() {
-	const storeResult = useSelector((state) => state.result.result);
-	const storeLoading = useSelector((state) => state.loading.loading);
-
-	const [forks, setForks] = useState([]);
-	const [loading, setLoading] = useState(false);
-	const [currentPage, setCurrentPage] = useState(1);
-	const [forksPerPage, setForksPerPage] = useState(30);
-
-	const lastForkIndex = currentPage * forksPerPage;
-	const firstForkIndex = lastForkIndex - forksPerPage;
-	const currentFork = forks.slice(firstForkIndex, lastForkIndex);
-
-	const loadingTable = () => {
-		if (storeResult.length > 0) {
-			setLoading(true);
-		}
-	};
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		setLoading(true);
-		setForks(storeResult);
-		console.log("useEffect", loading);
-		setLoading(false);
-	}, [storeResult, loading]);
+		dispatch(fetchContent({ url: document.location.search, page: document.location.search.split("?")[1].split("&")[2] }));
+	});
 
 	return (
 		<main className="main">
 			<div className="container">
 				<SearchBar />
-				<Table loading={loading} currentFork={currentFork} />
+				<Table />
 			</div>
 		</main>
 	);
