@@ -1,10 +1,7 @@
 import React from "react";
-// import { useSelector, useDispatch } from "react-redux";
-// import { Link } from "react-router-dom";
 
 export const Pagination = ({ forksPerPage, totalForks, paginate, prevPage, nextPage }) => {
 	const pageNumber = [];
-	// const storedResult = useSelector((state) => state.result.result);
 
 	for (let i = 1; i <= Math.ceil(totalForks / forksPerPage); i++) {
 		pageNumber.push(i);

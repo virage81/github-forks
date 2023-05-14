@@ -8,12 +8,11 @@ const initialState = {
 
 export const fetchContent = createAsyncThunk("result/getRepo", async (payload) => {
 	const octokit = new Octokit({
-		// auth: process.env.TOKEN,
-		auth: "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",
+		auth: process.env.TOKEN,
 	});
 
 	let search = payload.url;
-	let pageUrl = payload.page;
+	let pageUrl = payload.page.slice(payload.page.indexOf("=") + 1);
 
 	// Получаю адресную строку
 	switch (true) {
@@ -37,18 +36,18 @@ export const fetchContent = createAsyncThunk("result/getRepo", async (payload) =
 		repo = search.repository,
 		storeResult = [],
 		promises = [],
-		page = pageUrl ? pageUrl : search.page,
+		page = pageUrl ? pageUrl : 1,
 		perPage = 50,
 		maxPage = pageUrl ? pageUrl : 5,
 		index = 1;
 
-	for (let i = 1; i <= maxPage; i++) {
+	for (let i = page; i <= maxPage; i++) {
 		var request = octokit
 			.request("GET /repos/{owner}/{repo}/forks", {
 				owner: owner,
 				repo: repo,
 				per_page: perPage,
-				page: page,
+				page: i,
 			})
 			.then(
 				// eslint-disable-next-line no-loop-func
@@ -57,8 +56,7 @@ export const fetchContent = createAsyncThunk("result/getRepo", async (payload) =
 						storeResult = [
 							...storeResult,
 							{
-								// id: index++,
-								id: page === undefined ? index++ : page * perPage + index++,
+								id: index++,
 								title: item.name,
 								owner: item.owner.login,
 								stars: item.stargazers_count,

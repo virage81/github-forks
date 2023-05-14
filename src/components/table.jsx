@@ -13,15 +13,15 @@ function Table() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [forksPerPage] = useState(50);
 
-	const lastForkIndex = currentPage * forksPerPage;
-	const firstForkIndex = lastForkIndex - forksPerPage;
-	const currentFork = forks.slice(firstForkIndex, lastForkIndex);
-
 	useEffect(() => {
 		setLoading(true);
 		setForks(storeResult);
 		if (storeResult.length !== 0) setLoading(false);
 	}, [storeResult]);
+
+	const lastForkIndex = currentPage * forksPerPage;
+	const firstForkIndex = lastForkIndex - forksPerPage;
+	const currentFork = forks.slice(firstForkIndex, lastForkIndex);
 
 	// Устанавливаю текущую страницу
 	const paginate = (pageNumber) => {
@@ -43,8 +43,6 @@ function Table() {
 	if (loading) {
 		return <p className="table__error">...</p>;
 	}
-
-	console.log(currentFork);
 
 	return (
 		<>
