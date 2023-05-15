@@ -11,7 +11,7 @@ function Result() {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(fetchContent({ url: document.location.search, page: document.location.search.split("?")[1].split("&")[2] }));
+		dispatch(fetchContent({ url: document.location.search }));
 	});
 
 	return (

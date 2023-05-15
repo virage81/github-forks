@@ -11,8 +11,11 @@ export const fetchContent = createAsyncThunk("result/getRepo", async (payload) =
 		auth: process.env.TOKEN,
 	});
 
-	let search = payload.url;
-	let pageUrl = payload.page.slice(payload.page.indexOf("=") + 1);
+	let search, pageUrl;
+	try {
+		search = payload.url;
+		pageUrl = payload.url.slice(payload.url.indexOf("page=") + 5);
+	} catch {}
 
 	// Получаю адресную строку
 	switch (true) {
