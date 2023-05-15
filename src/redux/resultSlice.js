@@ -14,7 +14,7 @@ export const fetchContent = createAsyncThunk("result/getRepo", async (payload) =
 	let search, pageUrl;
 	try {
 		search = payload.url;
-		pageUrl = payload.url.slice(payload.url.indexOf("page=") + 5);
+		pageUrl = payload.url.indexOf("?") !== -1 ? payload.url.slice(payload.url.indexOf("page=") + 5) : undefined;
 	} catch {}
 
 	// Получаю адресную строку
