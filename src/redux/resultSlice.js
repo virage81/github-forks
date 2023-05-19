@@ -4,6 +4,7 @@ import { Octokit } from "octokit";
 
 const initialState = {
 	result: [],
+	favorites: [],
 };
 
 export const fetchContent = createAsyncThunk("result/getRepo", async (payload) => {
@@ -42,7 +43,12 @@ export const fetchContent = createAsyncThunk("result/getRepo", async (payload) =
 		page = pageUrl ? pageUrl : 1,
 		perPage = 50,
 		maxPage = pageUrl ? pageUrl : 5,
-		index = 1;
+		index = 0;
+
+	// объявление и получение локального хранилища
+	const storedItems = JSON.parse(localStorage.getItem("favoriteForks")) || [];
+	// Создает массив id из избранного
+	const favoriteForksId = storedItems.map((item) => item.id);
 
 	for (let i = page; i <= maxPage; i++) {
 		var request = octokit
@@ -56,13 +62,15 @@ export const fetchContent = createAsyncThunk("result/getRepo", async (payload) =
 				// eslint-disable-next-line no-loop-func
 				(res) => {
 					for (let item of res.data) {
+						index++;
 						storeResult = [
 							...storeResult,
 							{
-								id: index++,
+								id: index,
 								title: item.name,
 								owner: item.owner.login,
 								stars: item.stargazers_count,
+								favorite: favoriteForksId.includes(index),
 								link: item.html_url,
 							},
 						];
@@ -72,7 +80,9 @@ export const fetchContent = createAsyncThunk("result/getRepo", async (payload) =
 
 		promises.push(request);
 	}
+
 	await Promise.all(promises);
+
 	return storeResult;
 });
 
@@ -83,6 +93,14 @@ export const resultSlice = createSlice({
 		init(state, action) {
 			state.result = action.payload;
 		},
+		setFavorite(state, action) {
+			for (let item of state.result) {
+				if (item.id === action.payload.id && item.owner === action.payload.owner) {
+					item.favorite === false ? (item.favorite = true) : (item.favorite = false);
+					break;
+				}
+			}
+		},
 	},
 	extraReducers: (builder) => {
 		builder.addCase(fetchContent.fulfilled, (state, action) => {
@@ -92,6 +110,6 @@ export const resultSlice = createSlice({
 	},
 });
 
-export const { init } = resultSlice.actions;
+export const { init, setFavorite } = resultSlice.actions;
 
 export default resultSlice.reducer;

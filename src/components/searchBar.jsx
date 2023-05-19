@@ -1,5 +1,5 @@
 // Libs
-import React, { useState } from "react";
+import React, { useState /*useEffect, useRef */ } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -11,6 +11,7 @@ import ErrMessage from "../components/message";
 
 function SearchBar() {
 	const dispatch = useDispatch();
+	// const ref = useRef();
 
 	// Хуки для рендера сообщения
 	const [isErr, setIsErr] = useState(false);
@@ -30,26 +31,31 @@ function SearchBar() {
 	// Валидация поиска
 	const validateSearch = () => {
 		switch (true) {
-			case search.indexOf("/") === -1 || search.length === 0:
+			case search.indexOf("/") === -1 || search.length === 0: {
+				console.log(search);
 				setIsErr(true);
 				setMessage(noValid);
 				break;
+			}
 
-			case search.indexOf("/") === 0:
+			case search.indexOf("/") === 0: {
 				setIsErr(true);
 				setMessage(noOwner);
 				break;
+			}
 
 			case search.indexOf("/") === search.length - 1 ||
-				(search.indexOf("/") === search.length - 1 && search.substring(search.indexOf("/"), search.length) === ""):
+				(search.indexOf("/") === search.length - 1 && search.substring(search.indexOf("/"), search.length) === ""): {
 				setIsErr(true);
 				setMessage(noRepo);
 				break;
+			}
 
-			default:
+			default: {
 				dispatch(fetchContent({ url: search }));
 				navigate("/search", { replace: false });
 				break;
+			}
 		}
 
 		setTimeout(() => {
@@ -58,9 +64,22 @@ function SearchBar() {
 		}, 5000);
 	};
 
+	// useEffect(() => {
+	// 	document.addEventListener("keydown", (e) => {
+	// 		let val = ref;
+	// 		if (e.key === "Enter") {
+	// 			validateSearch(val.current.value);
+	// 		}
+	// 	});
+
+	// 	return () => {
+	// 		document.removeEventListener("keydown", () => {});
+	// 	};
+	// }, []);
+
 	return (
 		<>
-			<form className="search">
+			<div className="search">
 				<input type="text" className="search__input" id="searchBar" placeholder="Найти репозиторий..." value={search} onChange={handleSearch} />
 				<button type="button" onClick={validateSearch} className="search__button">
 					<svg viewBox="0 0 28 29" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -71,7 +90,7 @@ function SearchBar() {
 						/>
 					</svg>
 				</button>
-			</form>
+			</div>
 			<ErrMessage show={isErr} errText={message} />
 		</>
 	);

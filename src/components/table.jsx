@@ -40,6 +40,19 @@ function Table() {
 		setCurrentPage((prev) => prev + 1);
 	};
 
+	const addToFavorites = (e) => {
+		let id = Number(e.target.id);
+		let storedItems = JSON.parse(localStorage.getItem("favoriteForks")) || [];
+
+		if (e.target.checked) storedItems.push(storeResult[id - 1]);
+		else {
+			const storedItemIndex = storedItems.findIndex((item) => item.id === id);
+
+			storedItems.splice(storedItemIndex, 1);
+		}
+		localStorage.setItem("favoriteForks", JSON.stringify(storedItems));
+	};
+
 	if (loading) {
 		return <p className="table__error">...</p>;
 	}
@@ -66,7 +79,8 @@ function Table() {
 							name={item.title}
 							owner={item.owner}
 							stars={item.stars}
-							favorite="Да"
+							addToFavorites={addToFavorites}
+							checked={item.favorite}
 							link={item.link}
 						/>
 					))}
