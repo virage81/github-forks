@@ -110,6 +110,6 @@ export const resultSlice = createSlice({
 	},
 });
 
-export const { init, setFavorite } = resultSlice.actions;
+export const { init, setFavorite, addSearch } = resultSlice.actions;
 
 export default resultSlice.reducer;
