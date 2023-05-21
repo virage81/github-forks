@@ -1,5 +1,5 @@
 // Libs
-import React, { useState /*useEffect, useRef */ } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -11,7 +11,6 @@ import ErrMessage from "../components/message";
 
 function SearchBar() {
 	const dispatch = useDispatch();
-	// const ref = useRef();
 
 	// Хуки для рендера сообщения
 	const [isErr, setIsErr] = useState(false);
@@ -52,8 +51,6 @@ function SearchBar() {
 			}
 
 			default: {
-				dispatch(fetchContent({ url: search }));
-				navigate("/search", { replace: false });
 				break;
 			}
 		}
@@ -64,24 +61,18 @@ function SearchBar() {
 		}, 5000);
 	};
 
-	// useEffect(() => {
-	// 	document.addEventListener("keydown", (e) => {
-	// 		let val = ref;
-	// 		if (e.key === "Enter") {
-	// 			validateSearch(val.current.value);
-	// 		}
-	// 	});
+	const handleForm = (e) => {
+		e.preventDefault();
 
-	// 	return () => {
-	// 		document.removeEventListener("keydown", () => {});
-	// 	};
-	// }, []);
+		dispatch(fetchContent({ url: search }));
+		navigate("/search", { replace: false });
+	};
 
 	return (
 		<>
-			<div className="search">
+			<form className="search" onSubmit={handleForm}>
 				<input type="text" className="search__input" id="searchBar" placeholder="Найти репозиторий..." value={search} onChange={handleSearch} />
-				<button type="button" onClick={validateSearch} className="search__button">
+				<button type="submit" onClick={validateSearch} className="search__button">
 					<svg viewBox="0 0 28 29" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path d="M16.9166 17.4167L22.75 23.25" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
 						<path
@@ -90,7 +81,7 @@ function SearchBar() {
 						/>
 					</svg>
 				</button>
-			</div>
+			</form>
 			<ErrMessage show={isErr} errText={message} />
 		</>
 	);
