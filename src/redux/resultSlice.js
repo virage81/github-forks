@@ -42,13 +42,8 @@ export const fetchContent = createAsyncThunk("result/getRepo", async (payload) =
 		promises = [],
 		page = pageUrl ? pageUrl : 1,
 		perPage = 50,
-		maxPage = pageUrl ? pageUrl : 5,
+		maxPage = pageUrl ? pageUrl : 1,
 		index = 0;
-
-	// Получаю локальное хранилище
-	const storedItems = JSON.parse(localStorage.getItem("favoriteForks")) || [];
-	// Создает массив id из избранного
-	const favoriteForksId = storedItems.map((item) => item.id);
 
 	for (let i = page; i <= maxPage; i++) {
 		var request = octokit
@@ -70,7 +65,7 @@ export const fetchContent = createAsyncThunk("result/getRepo", async (payload) =
 								title: item.name,
 								owner: item.owner.login,
 								stars: item.stargazers_count,
-								favorite: favoriteForksId.includes(index),
+								favorite: false,
 								link: item.html_url,
 							},
 						];
@@ -104,8 +99,22 @@ export const resultSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder.addCase(fetchContent.fulfilled, (state, action) => {
-			state.result = action.payload;
-			if (action.payload === undefined) state.result = [];
+			let storeResult = action.payload;
+			let storedItems = JSON.parse(localStorage.getItem("favoriteForks"));
+
+			if (storeResult === undefined) state.result = [];
+			else if (storedItems === null || storedItems === []) state.result = action.payload;
+			else {
+				// Проверка на избранное
+				for (let item of storeResult) {
+					for (let localItem of storedItems) {
+						if (item.title === localItem.title && item.owner === localItem.owner && item.link === localItem.link) {
+							item.favorite = true;
+						}
+					}
+				}
+				state.result = storeResult;
+			}
 		});
 	},
 });

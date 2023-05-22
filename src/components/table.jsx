@@ -9,19 +9,42 @@ function Table() {
 	const storeResult = useSelector((state) => state.result.result);
 
 	const [forks, setForks] = useState([]);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [forksPerPage] = useState(50);
-
-	useEffect(() => {
-		setLoading(true);
-		setForks(storeResult);
-		if (storeResult.length !== 0) setLoading(false);
-	}, [storeResult]);
 
 	const lastForkIndex = currentPage * forksPerPage;
 	const firstForkIndex = lastForkIndex - forksPerPage;
 	const currentFork = forks.slice(firstForkIndex, lastForkIndex);
+
+	useEffect(() => {
+		setForks([]);
+		setForks(storeResult);
+		if (storeResult.length !== 0) setLoading(false);
+	}, [storeResult]);
+
+	const addToFavorites = (e) => {
+		const { target } = e;
+		// Получаю id репозитория
+		let title = target.getAttribute("data-title"),
+			owner = target.getAttribute("data-owner"),
+			link = target.getAttribute("data-link");
+
+		// Получаю данные из локального хранилища
+		let storedItems = JSON.parse(localStorage.getItem("favoriteForks")) || [];
+
+		// Если избранное - добавляем в массив
+		if (target.checked) {
+			storedItems.push({ title: title, owner: owner, link: link });
+		} else {
+			// Удалить избранное из массива
+			const storedItemIndex = storedItems.findIndex((item) => item.title === title && item.owner === owner && item.link === link);
+			storedItems.splice(storedItemIndex, 1);
+		}
+
+		// Добавляем массив в локальное хранилище
+		localStorage.setItem("favoriteForks", JSON.stringify(storedItems));
+	};
 
 	// Устанавливаю текущую страницу
 	const paginate = (pageNumber) => {
@@ -38,24 +61,6 @@ function Table() {
 	const nextPage = () => {
 		if (currentPage === Math.ceil(storeResult.length / forksPerPage)) return;
 		setCurrentPage((prev) => prev + 1);
-	};
-
-	const addToFavorites = (e) => {
-		// Получаю id репозитория
-		let id = Number(e.target.id);
-		// Получаю данные из локального хранилища
-		let storedItems = JSON.parse(localStorage.getItem("favoriteForks")) || [];
-
-		// Если избранное - добавляем в массив
-		if (e.target.checked) storedItems.push(storeResult[id - 1]);
-		else {
-			// Удалить избранное из массива
-			const storedItemIndex = storedItems.findIndex((item) => item.id === id);
-
-			storedItems.splice(storedItemIndex, 1);
-		}
-		// Добавляем массив в локальное хранилище
-		localStorage.setItem("favoriteForks", JSON.stringify(storedItems));
 	};
 
 	if (loading) return <p className="table__error">...</p>;
@@ -79,7 +84,7 @@ function Table() {
 						<TableCell
 							key={item.id}
 							id={item.id}
-							name={item.title}
+							title={item.title}
 							owner={item.owner}
 							stars={item.stars}
 							addToFavorites={addToFavorites}

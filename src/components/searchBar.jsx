@@ -59,7 +59,6 @@ function SearchBar() {
 
 	const handleForm = (e) => {
 		e.preventDefault();
-
 		dispatch(fetchContent({ url: search }));
 		navigate("/search", { replace: false });
 	};
