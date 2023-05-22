@@ -1,14 +1,13 @@
 import { useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
 
-function TableCell({ id, title, owner, stars, addToFavorites, checked, link }) {
+function TableCell({ id, title, owner, stars, addToFavorites, checked, link, fork }) {
 	const ref = useRef(false);
 
-	const storeResult = useSelector((state) => state.result.result);
+	// const storeResult = useSelector((state) => state.result.result);
 
 	useEffect(() => {
 		ref.current.checked = checked;
-	}, [storeResult, checked]);
+	}, [fork, checked]);
 
 	return (
 		<tr className="table__row">

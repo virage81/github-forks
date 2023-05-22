@@ -90,6 +90,7 @@ function Table() {
 							addToFavorites={addToFavorites}
 							checked={item.favorite}
 							link={item.link}
+							fork={storeResult}
 						/>
 					))}
 				</tbody>
