@@ -42,7 +42,7 @@ export const fetchContent = createAsyncThunk("result/getRepo", async (payload) =
 		promises = [],
 		page = pageUrl ? pageUrl : 1,
 		perPage = 50,
-		maxPage = pageUrl ? pageUrl : 1,
+		maxPage = pageUrl ? pageUrl : 5,
 		index = 0;
 
 	for (let i = page; i <= maxPage; i++) {
