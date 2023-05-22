@@ -3,8 +3,6 @@ import { useEffect, useRef } from "react";
 function TableCell({ id, title, owner, stars, addToFavorites, checked, link, fork }) {
 	const ref = useRef(false);
 
-	// const storeResult = useSelector((state) => state.result.result);
-
 	useEffect(() => {
 		ref.current.checked = checked;
 	}, [fork, checked]);
