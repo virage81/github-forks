@@ -45,7 +45,7 @@ export const fetchContent = createAsyncThunk("result/getRepo", async (payload) =
 		maxPage = pageUrl ? pageUrl : 5,
 		index = 0;
 
-	// объявление и получение локального хранилища
+	// Получаю локальное хранилище
 	const storedItems = JSON.parse(localStorage.getItem("favoriteForks")) || [];
 	// Создает массив id из избранного
 	const favoriteForksId = storedItems.map((item) => item.id);

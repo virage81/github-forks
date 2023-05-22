@@ -41,21 +41,24 @@ function Table() {
 	};
 
 	const addToFavorites = (e) => {
+		// Получаю id репозитория
 		let id = Number(e.target.id);
+		// Получаю данные из локального хранилища
 		let storedItems = JSON.parse(localStorage.getItem("favoriteForks")) || [];
 
+		// Если избранное - добавляем в массив
 		if (e.target.checked) storedItems.push(storeResult[id - 1]);
 		else {
+			// Удалить избранное из массива
 			const storedItemIndex = storedItems.findIndex((item) => item.id === id);
 
 			storedItems.splice(storedItemIndex, 1);
 		}
+		// Добавляем массив в локальное хранилище
 		localStorage.setItem("favoriteForks", JSON.stringify(storedItems));
 	};
 
-	if (loading) {
-		return <p className="table__error">...</p>;
-	}
+	if (loading) return <p className="table__error">...</p>;
 
 	return (
 		<>

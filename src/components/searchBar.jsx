@@ -23,10 +23,6 @@ function SearchBar() {
 		noOwner = "ERROR: enter a user.",
 		noRepo = "ERROR: repository doesn't exist.";
 
-	function handleSearch(e) {
-		setSearch(e.target.value);
-	}
-
 	// Валидация поиска
 	const validateSearch = () => {
 		switch (true) {
@@ -71,7 +67,14 @@ function SearchBar() {
 	return (
 		<>
 			<form className="search" onSubmit={handleForm}>
-				<input type="text" className="search__input" id="searchBar" placeholder="Найти репозиторий..." value={search} onChange={handleSearch} />
+				<input
+					type="text"
+					className="search__input"
+					id="searchBar"
+					placeholder="Найти репозиторий..."
+					value={search}
+					onChange={(e) => setSearch(e.target.value)}
+				/>
 				<button type="submit" onClick={validateSearch} className="search__button">
 					<svg viewBox="0 0 28 29" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path d="M16.9166 17.4167L22.75 23.25" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
