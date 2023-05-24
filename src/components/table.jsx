@@ -63,8 +63,8 @@ function Table() {
 
 	return (
 		<>
+			<h4 className="table__title">RESULT</h4>
 			<table className="table">
-				<caption className="table__title">RESULT</caption>
 				<thead>
 					<tr className="table__row">
 						<th className="table__heading">#</th>
