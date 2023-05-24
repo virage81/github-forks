@@ -18,7 +18,6 @@ function Table() {
 	const currentFork = forks.slice(firstForkIndex, lastForkIndex);
 
 	useEffect(() => {
-		setForks([]);
 		setForks(storeResult);
 		if (storeResult.length !== 0) setLoading(false);
 	}, [storeResult]);
@@ -90,7 +89,6 @@ function Table() {
 							addToFavorites={addToFavorites}
 							checked={item.favorite}
 							link={item.link}
-							fork={storeResult}
 						/>
 					))}
 				</tbody>

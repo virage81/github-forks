@@ -1,11 +1,18 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-function TableCell({ id, title, owner, stars, addToFavorites, checked, link, fork }) {
+function TableCell({ id, title, owner, stars, addToFavorites, checked, link }) {
 	const ref = useRef(false);
+
+	const [isChecked, setChecked] = useState(checked);
 
 	useEffect(() => {
 		ref.current.checked = checked;
-	}, [fork, checked]);
+	}, [checked]);
+
+	const handleChecked = (e) => {
+		addToFavorites(e);
+		setChecked(!isChecked);
+	};
 
 	return (
 		<tr className="table__row">
@@ -14,7 +21,16 @@ function TableCell({ id, title, owner, stars, addToFavorites, checked, link, for
 			<td className="table__cell">{owner}</td>
 			<td className="table__cell">{stars}</td>
 			<td className="table__cell">
-				<input key={id} ref={ref} type="checkbox" data-title={title} data-owner={owner} data-link={link} onChange={addToFavorites} />
+				<input
+					key={id}
+					ref={ref}
+					type="checkbox"
+					data-title={title}
+					data-owner={owner}
+					data-link={link}
+					onChange={handleChecked}
+					checked={isChecked}
+				/>
 			</td>
 			<td className="table__cell">
 				<a href={link} target="_blank" rel="noreferrer">
