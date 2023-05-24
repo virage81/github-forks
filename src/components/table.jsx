@@ -20,10 +20,11 @@ function Table() {
 	const currentFork = forks.slice(firstForkIndex, lastForkIndex);
 
 	useEffect(() => {
-		setLoading(true);
+		console.log(storeResult);
+		console.log(forks);
 		setForks(storeResult);
-		if (storeResult.length !== 0) setLoading(false);
-	}, [storeResult]);
+		if (forks.length !== 0) setLoading(false);
+	}, [forks, storeResult]);
 
 	const addToFavorites = (e) => {
 		const { target } = e;
@@ -47,11 +48,6 @@ function Table() {
 		// Добавляем массив в локальное хранилище
 		localStorage.setItem("favoriteForks", JSON.stringify(storedItems));
 		dispatch(setFavorite(storeResult));
-	};
-
-	// Устанавливаю текущую страницу
-	const paginate = (pageNumber) => {
-		setCurrentPage(pageNumber);
 	};
 
 	// Уменьшаю текущую страницу
@@ -97,7 +93,13 @@ function Table() {
 					))}
 				</tbody>
 			</table>
-			<Pagination forksPerPage={forksPerPage} totalForks={storeResult.length} paginate={paginate} prevPage={prevPage} nextPage={nextPage} />
+			<Pagination
+				forksPerPage={forksPerPage}
+				totalForks={storeResult.length}
+				paginate={(pageNumber) => setCurrentPage(pageNumber)}
+				prevPage={prevPage}
+				nextPage={nextPage}
+			/>
 		</>
 	);
 }
