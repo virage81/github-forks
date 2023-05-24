@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setFavorite } from "../redux/resultSlice";
 
 import TableCell from "../components/tableCell";
 import Pagination from "../components/pagination";
 
 function Table() {
+	const dispatch = useDispatch();
 	const storeResult = useSelector((state) => state.result.result);
 
 	const [forks, setForks] = useState([]);
@@ -18,6 +20,7 @@ function Table() {
 	const currentFork = forks.slice(firstForkIndex, lastForkIndex);
 
 	useEffect(() => {
+		setLoading(true);
 		setForks(storeResult);
 		if (storeResult.length !== 0) setLoading(false);
 	}, [storeResult]);
@@ -43,6 +46,7 @@ function Table() {
 
 		// Добавляем массив в локальное хранилище
 		localStorage.setItem("favoriteForks", JSON.stringify(storedItems));
+		dispatch(setFavorite(storeResult));
 	};
 
 	// Устанавливаю текущую страницу

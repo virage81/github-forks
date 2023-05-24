@@ -89,11 +89,26 @@ export const resultSlice = createSlice({
 			state.result = action.payload;
 		},
 		setFavorite(state, action) {
-			for (let item of state.result) {
-				if (item.id === action.payload.id && item.owner === action.payload.owner) {
-					item.favorite === false ? (item.favorite = true) : (item.favorite = false);
-					break;
+			let storeResult = action.payload;
+			let storedItems = JSON.parse(localStorage.getItem("favoriteForks"));
+
+			if (storeResult === undefined) state.result = [];
+			else if (storedItems === null || storedItems === []) state.result = action.payload;
+			else {
+				// Проверка на избранное
+				let array = [...storeResult];
+				for (let item of storeResult) {
+					for (let localItem of storedItems) {
+						if (item.title === localItem.title && item.owner === localItem.owner && item.link === localItem.link) {
+							Object.freeze(storeResult);
+							let tempItem = item;
+							tempItem = { id: item.id, title: item.title, owner: item.owner, stars: item.stars, favorite: true, link: item.link };
+
+							array[item.id - 1] = tempItem;
+						}
+					}
 				}
+				state.result = array;
 			}
 		},
 	},
@@ -119,6 +134,6 @@ export const resultSlice = createSlice({
 	},
 });
 
-export const { init, setFavorite, addSearch } = resultSlice.actions;
+export const { init, setFavorite } = resultSlice.actions;
 
 export default resultSlice.reducer;

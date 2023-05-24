@@ -27,7 +27,6 @@ function SearchBar() {
 	const validateSearch = () => {
 		switch (true) {
 			case search.indexOf("/") === -1 || search.length === 0: {
-				console.log(search);
 				setIsErr(true);
 				setMessage(noValid);
 				break;
