@@ -71,7 +71,7 @@ function SearchBar() {
 					id="searchBar"
 					placeholder="Найти репозиторий..."
 					value={search}
-					onChange={(e) => setSearch(e.target.value)}
+					onChange={({target}) => setSearch(target.value)}
 				/>
 				<button type="submit" onClick={validateSearch} className="search__button">
 					<svg viewBox="0 0 28 29" fill="none" xmlns="http://www.w3.org/2000/svg">

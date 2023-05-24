@@ -1,10 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
 import { Octokit } from "octokit";
 
 const initialState = {
 	result: [],
-	favorites: [],
 };
 
 export const fetchContent = createAsyncThunk("result/getRepo", async (payload) => {
@@ -116,6 +114,7 @@ export const resultSlice = createSlice({
 			addToFavorite(state, action);
 		},
 	},
+
 	extraReducers: (builder) => {
 		builder.addCase(fetchContent.fulfilled, (state, action) => {
 			let storeResult = action.payload;
@@ -123,9 +122,7 @@ export const resultSlice = createSlice({
 
 			if (storeResult === undefined) state.result = [];
 			else if (storedItems === null || storedItems === []) state.result = action.payload;
-			else {
-				addToFavorite(state, action);
-			}
+			else addToFavorite(state, action);
 		});
 	},
 });

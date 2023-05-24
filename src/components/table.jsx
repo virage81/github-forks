@@ -20,26 +20,23 @@ function Table() {
 	const currentFork = forks.slice(firstForkIndex, lastForkIndex);
 
 	useEffect(() => {
-		console.log(storeResult);
-		console.log(forks);
 		setForks(storeResult);
 		if (forks.length !== 0) setLoading(false);
 	}, [forks, storeResult]);
 
-	const addToFavorites = (e) => {
-		const { target } = e;
+	const addToFavorites = ({ target }) => {
+		// const { target } = e;
 		// Получаю id репозитория
-		let title = target.getAttribute("data-title"),
-			owner = target.getAttribute("data-owner"),
-			link = target.getAttribute("data-link");
+		const title = target.getAttribute("data-title");
+		const owner = target.getAttribute("data-owner");
+		const link = target.getAttribute("data-link");
 
 		// Получаю данные из локального хранилища
-		let storedItems = JSON.parse(localStorage.getItem("favoriteForks")) || [];
+		const storedItems = JSON.parse(localStorage.getItem("favoriteForks")) || [];
 
 		// Если избранное - добавляем в массив
-		if (target.checked) {
-			storedItems.push({ title: title, owner: owner, link: link });
-		} else {
+		if (target.checked) storedItems.push({ title: title, owner: owner, link: link });
+		else {
 			// Удалить избранное из массива
 			const storedItemIndex = storedItems.findIndex((item) => item.title === title && item.owner === owner && item.link === link);
 			storedItems.splice(storedItemIndex, 1);
@@ -86,16 +83,16 @@ function Table() {
 							title={item.title}
 							owner={item.owner}
 							stars={item.stars}
-							addToFavorites={addToFavorites}
-							checked={item.favorite}
 							link={item.link}
+							checked={item.favorite}
+							addToFavorites={addToFavorites}
 						/>
 					))}
 				</tbody>
 			</table>
 			<Pagination
 				forksPerPage={forksPerPage}
-				totalForks={storeResult.length}
+				totalForks={forks.length}
 				paginate={(pageNumber) => setCurrentPage(pageNumber)}
 				prevPage={prevPage}
 				nextPage={nextPage}

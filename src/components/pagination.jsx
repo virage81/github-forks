@@ -1,11 +1,7 @@
-import React from "react";
-
 export const Pagination = ({ forksPerPage, totalForks, paginate, prevPage, nextPage }) => {
 	const pageNumber = [];
 
-	for (let i = 1; i <= Math.ceil(totalForks / forksPerPage); i++) {
-		pageNumber.push(i);
-	}
+	for (let i = 1; i <= Math.ceil(totalForks / forksPerPage); i++) pageNumber.push(i);
 
 	if (pageNumber.length > 0)
 		return (
@@ -41,7 +37,6 @@ export const Pagination = ({ forksPerPage, totalForks, paginate, prevPage, nextP
 				</li>
 			</ul>
 		);
-	return null;
 };
 
 export default Pagination;

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-function TableCell({ id, title, owner, stars, addToFavorites, checked, link }) {
+function TableCell({ id, title, owner, stars, link, checked, addToFavorites }) {
 	const ref = useRef(false);
 
 	const [isChecked, setChecked] = useState(checked);
