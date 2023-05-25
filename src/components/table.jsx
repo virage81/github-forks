@@ -36,12 +36,12 @@ function Table() {
 		// Если избранное - добавляем в массив
 		if (target.checked) {
 			storedItems.push({ title: title, owner: owner, link: link });
-			dispatch(addFavorite({ title: title, owner: owner, link: link }));
+			dispatch(addFavorite({ link: link }));
 		} else {
 			// Удалить избранное из массива
 			const storedItemIndex = storedItems.findIndex((item) => item.title === title && item.owner === owner && item.link === link);
 			storedItems.splice(storedItemIndex, 1);
-			dispatch(deleteFavorite({ title: title, owner: owner, link: link }));
+			dispatch(deleteFavorite({ link: link }));
 		}
 
 		// Добавляем массив в локальное хранилище

@@ -88,13 +88,13 @@ export const resultSlice = createSlice({
 		},
 		addFavorite(state, action) {
 			let storeResult = state.result;
-			const { title, owner, link } = action.payload;
+			const { link } = action.payload;
 
 			// Добавление в избранное
 			let array = [...storeResult];
 
 			for (let item of storeResult) {
-				if (item.title === title && item.owner === owner && item.link === link) {
+				if (item.link === link) {
 					let tempItem = item;
 					tempItem = { id: item.id, title: item.title, owner: item.owner, stars: item.stars, favorite: true, link: item.link };
 					array[item.id - 1] = tempItem;
@@ -105,13 +105,13 @@ export const resultSlice = createSlice({
 		},
 		deleteFavorite(state, action) {
 			let storeResult = state.result;
-			const { title, owner, link } = action.payload;
+			const { link } = action.payload;
 
 			// Удаление из избранного
 			let array = [...storeResult];
 
 			for (let item of storeResult) {
-				if (item.title === title && item.owner === owner && item.link === link) {
+				if (item.link === link) {
 					let tempItem = item;
 					tempItem = { id: item.id, title: item.title, owner: item.owner, stars: item.stars, favorite: false, link: item.link };
 					array[item.id - 1] = tempItem;
@@ -135,7 +135,7 @@ export const resultSlice = createSlice({
 
 				for (let item of storeResult) {
 					for (let localItem of storedItems) {
-						if (item.title === localItem.title && item.owner === localItem.owner && item.link === localItem.link) {
+						if (item.link === localItem.link) {
 							let tempItem = item;
 							tempItem = { id: item.id, title: item.title, owner: item.owner, stars: item.stars, favorite: true, link: item.link };
 
