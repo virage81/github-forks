@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setFavorite } from "../redux/resultSlice";
+import { addFavorite, deleteFavorite } from "../redux/resultSlice";
 
 import TableCell from "../components/tableCell";
 import Pagination from "../components/pagination";
@@ -35,16 +35,19 @@ function Table() {
 		const storedItems = JSON.parse(localStorage.getItem("favoriteForks")) || [];
 
 		// Если избранное - добавляем в массив
-		if (target.checked) storedItems.push({ title: title, owner: owner, link: link });
-		else {
+		if (target.checked) {
+			storedItems.push({ title: title, owner: owner, link: link });
+			dispatch(addFavorite({ title: title, owner: owner, link: link }));
+		} else {
 			// Удалить избранное из массива
 			const storedItemIndex = storedItems.findIndex((item) => item.title === title && item.owner === owner && item.link === link);
 			storedItems.splice(storedItemIndex, 1);
+			dispatch(deleteFavorite({ title: title, owner: owner, link: link }));
 		}
 
 		// Добавляем массив в локальное хранилище
 		localStorage.setItem("favoriteForks", JSON.stringify(storedItems));
-		dispatch(setFavorite(storeResult));
+		// dispatch(setFavorite(storeResult));
 	};
 
 	// Уменьшаю текущую страницу

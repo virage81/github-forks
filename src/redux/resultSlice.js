@@ -79,29 +79,7 @@ export const fetchContent = createAsyncThunk("result/getRepo", async (payload) =
 	return storeResult;
 });
 
-const addToFavorite = (state, action) => {
-	let storeResult = action.payload;
-	let storedItems = JSON.parse(localStorage.getItem("favoriteForks"));
-
-	if (storeResult === undefined) state.result = [];
-	else if (storedItems === null || storedItems === []) state.result = action.payload;
-	else {
-		// Проверка на избранное
-		let array = [...storeResult];
-		for (let item of storeResult) {
-			for (let localItem of storedItems) {
-				if (item.title === localItem.title && item.owner === localItem.owner && item.link === localItem.link) {
-					Object.freeze(storeResult);
-					let tempItem = item;
-					tempItem = { id: item.id, title: item.title, owner: item.owner, stars: item.stars, favorite: true, link: item.link };
-
-					array[item.id - 1] = tempItem;
-				}
-			}
-		}
-		state.result = array;
-	}
-};
+const addToFavorite = (state, action) => {};
 
 export const resultSlice = createSlice({
 	name: "result",
@@ -110,8 +88,41 @@ export const resultSlice = createSlice({
 		init(state, action) {
 			state.result = action.payload;
 		},
-		setFavorite(state, action) {
-			addToFavorite(state, action);
+		addFavorite(state, action) {
+			let storeResult = state.result;
+			const { title, owner, link } = action.payload;
+
+			// Проверка на избранное
+			let array = [...storeResult];
+
+			for (let item of storeResult) {
+				if (item.title === title && item.owner === owner && item.link === link) {
+					let tempItem = item;
+					tempItem = { id: item.id, title: item.title, owner: item.owner, stars: item.stars, favorite: true, link: item.link };
+
+					array[item.id - 1] = tempItem;
+				}
+
+				state.result = array;
+			}
+		},
+		deleteFavorite(state, action) {
+			let storeResult = state.result;
+			const { title, owner, link } = action.payload;
+
+			// Проверка на избранное
+			let array = [...storeResult];
+
+			for (let item of storeResult) {
+				if (item.title === title && item.owner === owner && item.link === link) {
+					let tempItem = item;
+					tempItem = { id: item.id, title: item.title, owner: item.owner, stars: item.stars, favorite: false, link: item.link };
+
+					array[item.id - 1] = tempItem;
+				}
+
+				state.result = array;
+			}
 		},
 	},
 
@@ -122,11 +133,26 @@ export const resultSlice = createSlice({
 
 			if (storeResult === undefined) state.result = [];
 			else if (storedItems === null || storedItems === []) state.result = action.payload;
-			else addToFavorite(state, action);
+			else {
+				// Проверка на избранное
+				let array = [...storeResult];
+
+				for (let item of storeResult) {
+					for (let localItem of storedItems) {
+						if (item.title === localItem.title && item.owner === localItem.owner && item.link === localItem.link) {
+							let tempItem = item;
+							tempItem = { id: item.id, title: item.title, owner: item.owner, stars: item.stars, favorite: true, link: item.link };
+
+							array[item.id - 1] = tempItem;
+						}
+					}
+				}
+				state.result = array;
+			}
 		});
 	},
 });
 
-export const { init, setFavorite } = resultSlice.actions;
+export const { init, addFavorite, deleteFavorite } = resultSlice.actions;
 
 export default resultSlice.reducer;
