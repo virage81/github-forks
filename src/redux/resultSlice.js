@@ -90,10 +90,14 @@ const addToFavorite = (state, action) => {
 		let array = [...storeResult];
 		for (let item of storeResult) {
 			for (let localItem of storedItems) {
-				if (item.title === localItem.title && item.owner === localItem.owner && item.link === localItem.link) {
-					Object.freeze(storeResult);
+				if (Object.is(item.title, localItem.title) && Object.is(item.owner, localItem.owner) && Object.is(item.link, localItem.link)) {
 					let tempItem = item;
 					tempItem = { id: item.id, title: item.title, owner: item.owner, stars: item.stars, favorite: true, link: item.link };
+
+					array[item.id - 1] = tempItem;
+				} else {
+					let tempItem = item;
+					tempItem = { id: item.id, title: item.title, owner: item.owner, stars: item.stars, favorite: false, link: item.link };
 
 					array[item.id - 1] = tempItem;
 				}
