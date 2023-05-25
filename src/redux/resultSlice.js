@@ -79,8 +79,6 @@ export const fetchContent = createAsyncThunk("result/getRepo", async (payload) =
 	return storeResult;
 });
 
-const addToFavorite = (state, action) => {};
-
 export const resultSlice = createSlice({
 	name: "result",
 	initialState,
@@ -92,14 +90,13 @@ export const resultSlice = createSlice({
 			let storeResult = state.result;
 			const { title, owner, link } = action.payload;
 
-			// Проверка на избранное
+			// Добавление в избранное
 			let array = [...storeResult];
 
 			for (let item of storeResult) {
 				if (item.title === title && item.owner === owner && item.link === link) {
 					let tempItem = item;
 					tempItem = { id: item.id, title: item.title, owner: item.owner, stars: item.stars, favorite: true, link: item.link };
-
 					array[item.id - 1] = tempItem;
 				}
 
@@ -110,14 +107,13 @@ export const resultSlice = createSlice({
 			let storeResult = state.result;
 			const { title, owner, link } = action.payload;
 
-			// Проверка на избранное
+			// Удаление из избранного
 			let array = [...storeResult];
 
 			for (let item of storeResult) {
 				if (item.title === title && item.owner === owner && item.link === link) {
 					let tempItem = item;
 					tempItem = { id: item.id, title: item.title, owner: item.owner, stars: item.stars, favorite: false, link: item.link };
-
 					array[item.id - 1] = tempItem;
 				}
 

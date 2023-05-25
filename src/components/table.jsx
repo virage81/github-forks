@@ -25,7 +25,6 @@ function Table() {
 	}, [forks, storeResult]);
 
 	const addToFavorites = ({ target }) => {
-		// const { target } = e;
 		// Получаю id репозитория
 		const title = target.getAttribute("data-title");
 		const owner = target.getAttribute("data-owner");
