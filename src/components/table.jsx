@@ -47,7 +47,6 @@ function Table() {
 
 		// Добавляем массив в локальное хранилище
 		localStorage.setItem("favoriteForks", JSON.stringify(storedItems));
-		// dispatch(setFavorite(storeResult));
 	};
 
 	// Уменьшаю текущую страницу
